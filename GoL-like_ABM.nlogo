@@ -36,7 +36,7 @@ to go
 end
 
 to update_start
-  if ((count cells in-radius neigh-radius) < die-lower) or ((count cells in-radius neigh-radius) > die-upper) [
+  if ((count cells in-radius neigh-radius) < die-lower) or (use-die-upper and (count cells in-radius neigh-radius) > die-upper) [
     set dying true
   ]
 end
@@ -68,7 +68,7 @@ end
 to move
   if not delayed [
     rt random-float 360
-    fd 1
+    fd move-dist
   ]
 end
 @#$#@#$#@
@@ -102,7 +102,7 @@ ticks
 INPUTBOX
 5
 10
-195
+196
 70
 num-cells
 1000.0
@@ -111,20 +111,20 @@ num-cells
 Number
 
 CHOOSER
-5
-300
-194
-345
+3
+354
+196
+400
 record-type
 record-type
 "None" "Interface" "View"
 0
 
 BUTTON
-5
-355
-83
-395
+4
+406
+82
+446
 Setup
 setup\n\nif record-type = \"View\" [\nvid:start-recorder\nvid:record-view\n]\n\nif record-type = \"Interface\" [\nvid:start-recorder\nvid:record-interface\n]
 NIL
@@ -138,10 +138,10 @@ NIL
 1
 
 BUTTON
-100
-355
-194
-395
+99
+406
+193
+446
 Go (once)
 go\n\nif record-type = \"View\" [\nvid:record-view\n]\n\nif record-type = \"Interface\" [\nvid:record-interface\n]
 NIL
@@ -155,10 +155,10 @@ NIL
 0
 
 BUTTON
-5
-410
-75
-450
+4
+452
+74
+492
 Go
 go\n\nif record-type = \"View\" [\nvid:record-view\n]\n\nif record-type = \"Interface\" [\nvid:record-interface\n]
 T
@@ -172,10 +172,10 @@ NIL
 0
 
 BUTTON
-91
-410
-196
-450
+90
+452
+195
+492
 Save Video
 if record-type = \"View\" or record-type = \"Interface\" [\nvid:save-recording user-new-file\n]
 NIL
@@ -189,10 +189,10 @@ NIL
 0
 
 BUTTON
-5
-465
-100
-505
+2
+498
+97
+538
 Save CSV
 csv:to-file user-new-file [ (list xcor ycor) ] of cells
 NIL
@@ -206,10 +206,10 @@ NIL
 0
 
 MONITOR
-115
-465
-195
-518
+113
+498
+193
+551
 # cells
 count cells
 17
@@ -236,24 +236,24 @@ PENS
 
 SLIDER
 5
-80
+76
 195
-111
+109
 die-lower
 die-lower
 0
 10
-2.0
+0.0
 1
 1
 NIL
 HORIZONTAL
 
 SLIDER
-5
-120
-195
-153
+6
+116
+196
+149
 die-upper
 die-upper
 0
@@ -265,15 +265,15 @@ NIL
 HORIZONTAL
 
 SLIDER
-5
-165
-195
-198
+6
+155
+196
+188
 rep-lower
 rep-lower
 0
 10
-2.0
+0.0
 1
 1
 NIL
@@ -281,14 +281,14 @@ HORIZONTAL
 
 SLIDER
 5
-210
+194
 195
-243
+227
 rep-upper
 rep-upper
 0
 10
-4.0
+7.0
 1
 1
 NIL
@@ -296,14 +296,40 @@ HORIZONTAL
 
 SLIDER
 5
-255
+233
 195
-288
+266
 neigh-radius
 neigh-radius
 0
 5
-2.0
+1.5
+0.5
+1
+NIL
+HORIZONTAL
+
+SWITCH
+4
+314
+195
+347
+use-die-upper
+use-die-upper
+1
+1
+-1000
+
+SLIDER
+5
+273
+197
+307
+move-dist
+move-dist
+0
+5
+1.5
 0.5
 1
 NIL
@@ -643,7 +669,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.1.1
+NetLogo 6.2.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
